@@ -1,0 +1,23 @@
+Self Signed https website on apache2:
+===============================
+-> sudo apt-get install apache2 openssl
+-> sudo a2enmod ssl
+-> sudo a2ensite default-ssl
+# creating self signed ssl certificate
+-> sudo mkdir /etc/apache2/ssl
+-> sudo openssl \
+	req \
+	-x509 \
+	-nodes \
+	-days 365 \
+	-newkey rsa:2048 \
+	-keyout /etc/apache2/ssl/apache.key \
+	-out /etc/apache2/ssl/apache.crt 
+-> sudo chmod 600 /etc/apache2/ssl/*
+-> sudo nano /etc/apache2/sites-available/default-ssl.conf
+	- ServerName 192.168.80.134:443
+	- SSLCertificateFile      /etc/apache2/ssl/apache.crt
+                  - SSLCertificateKeyFile /etc/apache2/ssl/apache.key
+-> sudo systemctl restart apache2
+-> To check - https://192.168.80.134
+
