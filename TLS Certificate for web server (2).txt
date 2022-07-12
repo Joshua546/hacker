@@ -1,0 +1,42 @@
+TLS Certificate for Web server:
+1. rootCA - 
+2. subCA
+i. User Certificate - So user can digitally signed certificate.
+ii. TLS Certificate - It is ment for web server to run https service. 
+
+Practial:
+-> open XCA software to generate key.
+-> create shuhari template.
+-> Create rootCA and subCA key.
+-> add rootCA in certmgn in windows base machine.
+-> Create a new private key -  New Key - 
+    - Key Name: www.shuharilabs.local   
+->  Create A new Certificate for www.shuharilabs.local key:
+     - Click on New Certificate
+     - select second option (use the certificate for signing) and select (subCA) from dropdown
+     - applying two template.
+	1.  select shuhari template -> apply subject -> fill form details-> Common Name-> www.shuharilabs.local
+	2. select TLS server -> apply extensions
+    - export www.shuharilabs.local private key with PEM private(*.pem)
+    - export www.shuharilabs.local certificate with PEM Chain(*.pem) - rename file with cert
+
+In Debian Machine:
+================
+-> sudo apt-get update
+-> setup DNS 
+-> sudo apt-get install apache2
+-> sudo mkdir /etc/apache2/ssl
+	- copy shuharilabs key and certificate into this folder
+-> sudo chmod 600 /etc/apache2/ssl/*
+-> sudo a2enmod ssl
+-> sudo a2ensite default -ssl
+-> sudo nano /etc/apache2/sites-available/default-ssl.conf
+	- ServerName www.shuharilabs.local:443
+	- Add shuhari certificate file path
+	- Add shuhari certificate key path
+-> sudo systemctl restart apache2
+-> sudo systemctl status apache2
+
+Testing: 
+- first add dns ip in vmnet8 adapter  in base machine.
+- on browser : https://www.shuharilabs.local
