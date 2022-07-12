@@ -1,0 +1,39 @@
+Install apache2
+Install tree
+Install openssl
+>/etc/apache2/sites-available
+Sudo a2enmod ssl
+Sudo a2ensite default-ssl
+# creating a self sign certificate
+Sudo mkdir /etc/apache2/ssl >>>>>>>>>>> folder is created to put all certificate and
+files inside this
+Sudo openssl \
+Req \
+-x509 \
+-nodes \
+-days 365 \
+-newkey rsa:2048 \
+-keyout /etc/apache2/ssl/apache.key \
+-out /etc/apache2/ssl/apache.crt
+# Fill all the details properly in form
+*common name > ip address
+Ls -l /etc/apacche2/ssl >>>>>>>> two files has been created >> key >> & certificate
+Sudo chmod 600 /etc/apache2/ssl/*
+Sudo nano /etc/apache2/sites-available/default-ssl.conf >>>>>>>>>> edit this configuartion
+file
+
+serveradmin ......
+server name .......IP
+
+sslcertificatefile    /etc/apache2/ssl/apache.cert
+sslcertificatekeyfile  /etc/apache2/ssl/apache.key
+
+
+
+Add
+ServerName 192.168.80.128:443 >>>>>>>>>>>>>> server ip address
+
+Edit the path of the ssl certificate file & ssl certificate key file in the configuartion
+Sudo systemctl reload apache2
+Ss -ant >>>>>>>>>>> port 443 should be open
+http://192.168.80.128 >>>>>>>>>> to access the webpage and check the certificate
